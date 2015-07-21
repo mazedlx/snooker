@@ -1,0 +1,73 @@
+.red {
+	background-color: red;
+	height: 26px;
+	-moz-border-radius:13px;
+	-webkit-border-radius: 13px;
+	width: 26px;
+	float: left;
+
+}
+
+.yellow {
+	background-color: yellow;
+	height: 26px;
+	-moz-border-radius:13px;
+	-webkit-border-radius: 13px;
+	width: 26px;
+	float: left;
+}
+
+.green {
+	background-color: green;
+	height: 26px;
+	-moz-border-radius:13px;
+	-webkit-border-radius: 13px;
+	width: 26px;
+	float: left;
+}
+
+.brown {
+	background-color: brown;
+	height: 26px;
+	-moz-border-radius:13px;
+	-webkit-border-radius: 13px;
+	width: 26px;
+	float: left;
+}
+
+.foul {
+	background-color: white;
+	height: 26px;
+	-moz-border-radius:13px;
+	-webkit-border-radius: 13px;
+	width: 26px;
+	float: left;
+}
+
+.blue, .foulblue {
+	background-color: blue;
+	height: 26px;
+	-moz-border-radius:13px;
+	-webkit-border-radius: 13px;
+	width: 26px;
+	float: left;
+	}
+
+.pink, .foulpink {
+	background-color: pink;
+	height: 26px;
+	-moz-border-radius:13px;
+	-webkit-border-radius: 13px;
+	width: 26px;
+	float: left;
+}
+
+.black, .foulblack {
+	background-color: black;
+	height: 26px;
+	-moz-border-radius:13px;
+	-webkit-border-radius: 13px;
+	width: 26px;
+	float: left;
+}
+
