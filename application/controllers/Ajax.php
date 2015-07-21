@@ -26,9 +26,9 @@ class Ajax extends CI_Controller {
 		$id_team = $this->input->post('id_team');
 		$frame = $this->input->post('frame');
 		$score = $this->input->post('score');
-
 		$break_text = $this->input->post('break_text');
 		$break_text = substr($break_text, 1);
+		$free_ball = $this->input->post('free_ball');
 
 		$insert = array(
 			'id_team'		=> $id_team,
@@ -39,6 +39,17 @@ class Ajax extends CI_Controller {
 			'created_at'	=> date('Y-m-d H:i:s')
 		);
 		$this->db->insert('score', $insert);
+		$id_score = $this->db->insert_id();
+
+		if($free_ball) {
+			$insert = array(
+				'id_match'	=> $id_match,
+				'frame'		=> $frame,
+				'id_score'	=> $id_score,
+				'free_ball'	=> $free_ball
+			);
+			$this->db->insert('free_ball', $insert);
+		}
 	}
 
 	public function save_score_and_foul()

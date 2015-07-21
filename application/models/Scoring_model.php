@@ -24,10 +24,15 @@ class Scoring_model extends CI_Model {
 
 	public function scoring_buttons()
 	{
+		$remaining_reds = $this->remaining_reds($this->session->userdata('id_match'), $this->session->userdata('frame'));
+
 		$this->db->select('*');
 		$this->db->from('score_type');
 		$this->db->where('score_type_short !=','freeball');
 		$this->db->where('score_type_short NOT LIKE "%foul%"');
+		if($remaining_reds < 1) {
+			$this->db->where('score_type_short != ', 'red');
+		}
 		$this->db->order_by('value', 'asc');
 		$query = $this->db->get();
 		foreach($query->result() as $row) {

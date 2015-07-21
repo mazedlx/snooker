@@ -40,7 +40,13 @@ class Scoring extends CI_Controller {
 		$data['result_2'] = $results[$id_team_2] | '0';
 
 		$data['frames_table'] = $this->scoring_model->frames($data['id_match']); 
-
+		$data['remaining_reds'] = $this->scoring_model->remaining_reds($data['id_match'], $data['frame']);
+		if($data['remaining_reds'] < 1) {
+			$data['colors'] = 1;
+		} else {
+			$data['colors'] = 0;
+		}
+		echo $data['colors'];
 		$this->load->view('head', $data, FALSE);
 		$this->load->view('scoring', $data, FALSE);
 		$this->load->view('foot', $data, FALSE);
