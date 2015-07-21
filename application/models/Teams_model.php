@@ -6,25 +6,25 @@ class Teams_model extends CI_Model {
 	{
 		if($this->input->post('team_1')) {
 			$insert = array(
-				'team'	=> $this->input->post('team_1')
+				'team'	=> $this->input->post('team_1'),
+				'created_at'	=> date('Y-m-d H:i:s')
 			);
 			$this->db->insert('team', $insert);
 			$id_team_1 = $this->db->insert_id();
 			$array = array(
-				'id_team_1' 	=> $id_team_1,
-				'created_at'	=> date('Y-m-d H:i:s')
+				'id_team_1' 	=> $id_team_1
 			);
 			$this->session->set_userdata($array);
 		}
 		if($this->input->post('team_2')) {
 			$insert = array(
-				'team'	=> $this->input->post('team_2')
+				'team'	=> $this->input->post('team_2'),
+				'created_at'	=> date('Y-m-d H:i:s')
 			);
 			$this->db->insert('team', $insert);
 			$id_team_2 = $this->db->insert_id();
 			$array = array(
-				'id_team_2' 	=> $id_team_2,
-				'created_at'	=> date('Y-m-d H:i:s')
+				'id_team_2' 	=> $id_team_2
 			);
 			$this->session->set_userdata($array);
 		}

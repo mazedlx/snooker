@@ -57,6 +57,6 @@ switch($active) {
 				</div>
 			</div>
 		</div>
-		<?
-		}
-		?>
+		<?php
+	}
+	?>

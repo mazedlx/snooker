@@ -110,7 +110,7 @@ class Scoring_model extends CI_Model {
 		$this->load->library('table');
 
 		$template = array(
-			'table_open' => '<table class="table">'
+			'table_open' => '<table class="table table-condensed table-bordered">'
 		);
 		$this->table->set_template($template);
 
@@ -126,7 +126,9 @@ class Scoring_model extends CI_Model {
 			array(
 				'Frame',	
 				$this->teams_model->get_team($id_team_1),
-				$this->teams_model->get_team($id_team_2)
+				'Highest Break',
+				$this->teams_model->get_team($id_team_2),
+				'Highest Break'
 			)
 		);		
 
@@ -135,19 +137,60 @@ class Scoring_model extends CI_Model {
 		$this->db->where('id_match', $id_match);
 		$this->db->group_by('id_team');
 		$this->db->group_by('frame');
+		$this->db->order_by('frame', 'asc');
 		$query = $this->db->get();
-		foreach($query->result() as $row) {
-			$frames[$row->frame][$row->id_team] = $row->sum_score;
-		}
-		foreach($frames as $id => $frame) {
+		if($query->num_rows() > 0) {
+			foreach($query->result() as $row) {
+				$frames[$row->frame][$row->id_team] = $row->sum_score;
+			}
+			foreach($frames as $id => $frame) {
+				if(!$frame[$id_team_1]) $frame[$id_team_1] = 0;
+				if(!$frame[$id_team_2]) $frame[$id_team_2] = 0;
+				$tabledata[] = array(
+					$id,
+					$frame[$id_team_1],
+					$this->highest_break($id_match, $id, $id_team_1),
+					$frame[$id_team_2],
+					$this->highest_break($id_match, $id, $id_team_2)
+				);
+			}
+		} else {
 			$tabledata[] = array(
-				$id,
-				$frame[$id_team_1],
-				$frame[$id_team_2]
+				array(
+					'data' 		=> 'Noch keine Frames gespielt',
+					'colspan'	=> 5
+				)
 			);
 		}
 		$table = $this->table->generate($tabledata);
 		return $table;
+	}
+
+	public function highest_break($id_match, $frame, $id_team)
+	{
+		$this->db->select('id, break');
+		$this->db->from('score');
+		$this->db->where('id_match', $id_match);
+		$this->db->where('frame', $frame);
+		$this->db->where('id_team', $id_team);
+		$this->db->where('break !=', 'foul');
+		$query = $this->db->get();
+		foreach($query->result() as $row) {
+			$break = explode(',', $row->break);
+			foreach($break as $key => $color) {
+				$this->db->select('value');
+				$this->db->from('score_type');
+				$this->db->where('score_type_short', $color);
+				$query_b = $this->db->get();
+				$row_b = $query_b->row();
+
+				$break_scores[$row->id]+= $row_b->value;
+			}
+		}
+		rsort($break_scores);
+		$highest_break = $break_scores[0];
+		if(!$highest_break) $highest_break = 0;
+		return $highest_break;
 	}
 }
 

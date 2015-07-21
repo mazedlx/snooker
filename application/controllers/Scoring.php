@@ -46,7 +46,6 @@ class Scoring extends CI_Controller {
 		} else {
 			$data['colors'] = 0;
 		}
-		echo $data['colors'];
 		$this->load->view('head', $data, FALSE);
 		$this->load->view('scoring', $data, FALSE);
 		$this->load->view('foot', $data, FALSE);

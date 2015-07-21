@@ -7,13 +7,17 @@
 				<li role="presentation" data-id-team="<?php echo $id_team_2; ?>"><a><?php echo $team2; ?></a></li>
 			</ul>
 			<div>
-
 				<h2>Break: <span id="score"><?php echo $score; ?></span></h2>
-				<div id="break">
-					
-				</div>
+				<div id="break"></div>
 			</div>
-			<hr>
+		</div>
+		<div class="col-md-3">
+			<h1>Frames</h1>
+			<?php echo $frames_table; ?>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-9">
 			<div>
 				<h3>Points</h3>
 				<?php
@@ -56,10 +60,6 @@
 			<input type="hidden" id="remaining_reds" value="<?php echo $remaining_reds; ?>" />
 			<input type="hidden" id="colors" value="<?php echo $colors; ?>" />
 		</div>
-		<div class="col-md-3">
-			<h1>Frames</h1>
-			<?php echo $frames_table; ?>
-		</div>
 	</div>
 </div>
 <script>
@@ -72,9 +72,15 @@ if(remaining_reds < 1) {
 	$('[data-short="red"]').show();
 }
 
+var colors = $('#colors').val();
+if(colors == 1) {
+	$('[data-short="red"]').remove();	
+}
+
 $('#team_tabs a').click(function (e) {
 	e.preventDefault();
 	$(this).tab('show');
+	
 	var id_team = $(this).closest('li').attr('data-id-team');
 	var frame = $(this).closest('ul').attr('data-frame');
 	var id_match = $(this).closest('ul').attr('data-id-match');	
@@ -247,6 +253,16 @@ $('#btn_save_score').click(function() {
 			$('#break_text').val('');
 			$('#score').text(0);
 			$('#free_ball').val('');
+
+			if($('#colors').val() < 1) {
+				console.log('leider hier');
+				console.log($('#colors').val());
+				$('[data-type="score"]').hide();
+				$('[data-short="red"]').show();
+			} else if($('#colors').val() > 0) {
+				$('[data-type="score"]').show();
+				$('[data-short="red"]').remove();
+			}
 		});
 	});
 });
