@@ -27,7 +27,6 @@
 					<?
 				}
 				?>
-
 				<h3>Foul</h3>
 				<?php
 				foreach($foul_buttons as $button) {

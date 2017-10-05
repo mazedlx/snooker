@@ -10,6 +10,9 @@ switch($active) {
 	case 'scoring':
 		$active_scoring = $class;
 		break;
+	case 'stats':
+		$active_stats = $class;
+		break;
 }
 ?>
 <!DOCTYPE html>
@@ -42,6 +45,7 @@ switch($active) {
 					<li <?php echo $active_teams; ?>><a href="teams">Teams</a></li>
 					<li <?php echo $active_match; ?>><a href="match">Match</a></li>
 					<li <?php echo $active_scoring; ?>><a href="scoring">Scoring</a></li>
+					<li <?php echo $active_stats; ?>><a href="stats">Stats</a></li>
 					<li><a href="ajax/logoff">Beenden</a></li>
 				</ul>			
 			</div>

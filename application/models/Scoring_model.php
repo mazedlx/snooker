@@ -192,6 +192,58 @@ class Scoring_model extends CI_Model {
 		if(!$highest_break) $highest_break = 0;
 		return $highest_break;
 	}
+
+	public function get_all_matches()
+	{
+		$this->load->model('teams_model');
+		$this->load->library('table');
+		$template = array(
+			'table_open'	=> '<table class="table table-bordered">'
+		);
+		$this->table->set_template($template);
+		$this->table->set_heading(array(
+			'Datum',
+			'Team 1',
+			'Punkte',
+			'Team 2',
+			'Punkte'
+		));
+		$this->db->select('*');
+		$this->db->from('match');
+		$this->db->order_by('created_at', 'desc');
+		$query = $this->db->get();
+		foreach($query->result() as $row) {
+			$this->db->select('SUM(score) AS sum_score, id_team, frame');
+			$this->db->from('score');
+			$this->db->where('id_match', $row->id);
+			$this->db->group_by('id_match');
+			$this->db->group_by('id_team');
+			$this->db->group_by('frame');
+			$query_s = $this->db->get();
+			foreach($query_s->result() as $row_s) {
+				$scores[$row_s->id_team][$row_s->frame] = $row_s->sum_score;
+			}
+
+			$this->db->select('MAX(frame) AS max_frame');
+			$this->db->from('score');
+			$this->db->where('id_match', $row->id);
+			$query_f = $this->db->get();
+			$row_f = $query_f->row();
+			$max_frame = $row_f->max_frame;
+			for($i = 1; $i <= $max_frame; $i++) {
+				$tabledata[] = array(
+					date('d.m.Y', strtotime($row->created_at)),
+					$this->teams_model->get_team($row->id_team_1),
+					$scores[$row->id_team_1][$i],
+					$this->teams_model->get_team($row->id_team_2),
+					$scores[$row->id_team_2][$i]
+				);
+			}
+		}
+
+		$table = $this->table->generate($tabledata);
+		return $table;
+	}
 }
 
 /* End of file Scoring_model.php */
